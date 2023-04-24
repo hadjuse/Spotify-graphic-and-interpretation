@@ -9,13 +9,13 @@ Here is a project that I made which contains graphics and analysis of a dataset 
 The aim of the project is to make prediction of what modes (major or minor) belong a sampled songs using 2 caracteristics like danceability and rythm.
 
 ## Summaries:
-  1. **Data cleaning**
-  2. **Data selection**
-  3. **Plot the necessary informations**
+  1. **[Data cleaning](#Data-cleaning)**
+  2. **[Data selection](#Data-selection)**
+  3. **[Interpretation and plot](#ploty)**
   4. **training model**
   5. **Visualisation of the results**
   
- # Data cleaning
+ # <a name = "Data-cleaning"></a>Data cleaning
  First of all, we import all necessary libraries:
   ```python
 import pandas as pd
@@ -32,10 +32,15 @@ from sklearn import metrics
 print(data.shape)
 data.head()
  ```
- # Data selection
+ # <a name = "Data-selection"></a>Data selection
 The interesting datas are : Song_name, artist name, and the different information about the song, such as the key of the song or bpm.
 Code:
 ```python
 song_information = data.iloc[0:25, 12:23]
+```
+# <a name = "ploty"></a>Interpretation of the datas
+Lets plot some information like the popularity of the first 25 songs:
+```python
+artist_information["popularity"].plot.bar()
 ```
 
