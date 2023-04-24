@@ -11,9 +11,11 @@ The aim of the project is to make prediction of what modes (major or minor) belo
 ## Summaries:
   1. **[Data cleaning](#Data-cleaning)**
   2. **[Data selection](#Data-selection)**
-  3. **[Interpretation and plot](#ploty)**
-  4. **training model**
-  5. **Visualisation of the results**
+  3. **[Interpretation, Classification and plot](#ploty)**
+        - [Interpretation](#i)
+        - [Classification Data](#c)
+  4. **[training model](#train)**
+  5. **[Visualisation of the results](#result)**
   
  # <a name = "Data-cleaning"></a>Data cleaning
  First of all, we import all necessary libraries:
@@ -43,4 +45,51 @@ Lets plot some information like the popularity of the first 25 songs:
 ```python
 artist_information["popularity"].plot.bar()
 ```
+![](images/popularity.png)
 
+This one is about the the technical's details on the songs
+```python
+song_information[["acousticness", "liveness", "valence"]].plot.bar(figsize=(10,7))
+```
+![](images/alv.png)
+
+# <a name="i"><a/>Interpretation
+We can give an interpretation about these two graphics. 
+- The first graphic shows the popularity of each song that we pick up.
+- The second graphic shows differents bar which represent (based on 3 caracteristic) the efficiency of each song.
+
+
+Let's explain these 3 caracteristics: 
+1. **acousticness**:
+
+    - Informs the probability of a song to be acoustic or not.
+
+
+2. **liveness**:
+
+    - Detects the presence of an audience in a song.       
+    The higher the liveness value, the higher the        
+    probability of a song being performed live.
+    
+    
+3. **valence**:
+
+    - Describes the positiveness within a song.          
+      High valence values represent happier songs,        
+      whereas low values characterize the opposite.
+
+Finally we can assert that the most popular song on this subdata, which is *côte ouest* **n°17**, is not a liveness song but he's quite **acoustic** and has an average **valence**.
+And the less popular songs on this selection has a less probability of acousticsness.
+# <a name="c">Classification of the songs
+This section is to classify the different song according to their:
+
+1. **danceability**:
+    - Combines tempo, rhythm and other elements         
+      to inform if a song is suitable for dancing.
+
+2. **mode**:
+    - If the song is in the minor key or major key.
+3. **energy**:
+    - Represents the intensity and activity of a song by     
+      combining information such as dynamic range, perceived   
+    loudness, timbre, onset rate, and general entropy.
