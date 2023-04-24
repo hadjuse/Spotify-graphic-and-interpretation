@@ -14,7 +14,7 @@ The aim of the project is to make prediction of what modes (major or minor) belo
   3. **[Interpretation, Classification and plot](#ploty)**
         - [Interpretation](#i)
         - [Classification Data](#c)
-  4. **[training model](#train)**
+  4. **[Machine Learning: KNN](#train)**
   5. **[Visualisation of the results](#result)**
   
  # <a name = "Data-cleaning"></a>Data cleaning
@@ -93,3 +93,60 @@ This section is to classify the different song according to their:
     - Represents the intensity and activity of a song by     
       combining information such as dynamic range, perceived   
     loudness, timbre, onset rate, and general entropy.
+
+Let's separate in 2 group.
+Code:
+```python
+df = data[["mode", "danceability", "energy"]].iloc[0: 750]
+df_dance=df[df[["danceability", "energy"]] >= 0.5] # ig the song is "danceable"
+df_less_dance=df[df[["danceability", "energy"]] <= 0.5] # if the song is not "danceable" 
+
+
+ax = df_dance.plot.scatter(x="danceability", y="energy", color="DarkBlue", label="Danceable and energy")
+df_less_dance.plot.scatter(x="danceability", y="energy", color="DarkGreen", label="less Danceable and energy", ax=ax)
+df.plot.scatter(x="danceability", y="energy", c="mode" ,cmap="viridis", s=50, figsize=(10,7))
+```
+The idea above is to separate in 2 equivalent proportionnal groups showing how many songs have a higher chance to be danceable or not.
+![](images/danceability.png)
+
+As we can see, there is much more songs on the dataset which have a good chance to be energetic and danceable.
+
+Now, let's see if there is a good repartition between the songs according to their <a name="c"> modes (i.e major or minor)
+![](images/mode.png)
+We see that the modes have a good repartition between the songs.
+# Final interpretation:
+    1. There is much song in the minor key that they are in the major key.
+    2. There is more songs that are danceable and energic.
+
+# <a name="train"> Machine learning using KNN
+Let's implement an algorithm using the model KNN with python in order to group the different type of music using 3 caracteristic such as danceability, energy, mode.
+## Sampling data
+Code:
+```python
+df1 = data[["song_name","danceability", "energy", "mode"]].iloc[0: 700]
+df1.to_numpy()
+df1.hist(figsize=(10,10))
+sample = np.random.randint(df1.shape[0], size=500)
+x = df1[["danceability", "energy"]].iloc[sample].to_numpy() # "danceability and energy of the song"
+y = df1["mode"].iloc[sample]
+lab = preprocessing.LabelEncoder()
+y_transformed = lab.fit_transform(y)
+```
+![](images/hist.png)
+
+## Train set and test set:
+    We'll try to train our model firstly with K = 6.
+```python
+from sklearn.model_selection import train_test_split
+xtrain, xtest, ytrain, ytest = train_test_split(x, y_transformed, train_size=0.8)
+from sklearn import neighbors
+knn = neighbors.KNeighborsClassifier(n_neighbors=6)
+knn.fit(xtrain, ytrain.ravel())
+```
+    Let's see the first performance of our model:
+```python
+error = 1 - knn.score(xtest,ytest)
+print(f"Error = {error}")
+```
+    output: Error = 0.43999999999999995
+
